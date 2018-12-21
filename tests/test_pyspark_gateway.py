@@ -1,38 +1,59 @@
-from multiprocessing import Process
 import unittest
+import time
+from multiprocessing import Process
+import os
 
-from py4j.java_gateway import JavaGateway, GatewayParameters
+import psutil
 import requests
-import pyspark
-from pyspark import SparkContext, SparkConf
-from pyspark.sql.context import SQLContext
+import pandas
 
 from pyspark_gateway import server
+from pyspark_gateway import PysparkGateway
 
 class PysparkGatewayTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.server = Process(target=server.run, kwargs={'debug': True, 'use_reloader': False})
         cls.server.start()
-        cls.server.join(1) # needs some time to boot up the webserver
+        cls.server.join(10) # needs some time to boot up the webserver
 
     @classmethod
-    def tearDownClass(self):
-        self.server.terminate()
+    def tearDownClass(cls):
+        cls.server.terminate()
 
-    def test_create_dataframe(self):
-        r = requests.get('http://localhost:8765/gateway')
-        resp = r.json()
+        # just for testing so we don't have any
+        # zombie procs because we're forking off forks
+        # this isn't needed when run on its own
+        cur_pid = os.getpid()
 
-        gateway = JavaGateway(gateway_parameters=GatewayParameters(port=9999, auth_token=resp['auth_token'], auto_convert=True))
+        for p in psutil.process_iter():
+            if p.name() == 'python' and p.pid != cur_pid:
+                p.terminate()
+
+    def test_pyspark_gateway(self):
+        pg = PysparkGateway()
+
+        import pyspark
+        from pyspark import SparkContext, SparkConf
+        from pyspark.sql.context import SQLContext
 
         conf = SparkConf().set('spark.io.encryption.enabled', 'true')
-        sc = SparkContext(gateway=gateway, conf=conf)
+        sc = SparkContext(gateway=pg.gateway, conf=conf)
+        sqlContext = SQLContext.getOrCreate(sc)
 
         self.assertEqual(type(sc), SparkContext)
 
+        df = sqlContext.createDataFrame([(1,2,'value 1')], ['id1', 'id2', 'val'])
+        self.assertEqual(df.count(), 1)
+
+        rows = df.collect()
+        self.assertEqual(rows[0].id1, 1)
+
+        pd = df.toPandas()
+        self.assertEqual(type(pd), pandas.core.frame.DataFrame)
+
         sc.stop()
-        gateway.shutdown()
+        pg.gateway.shutdown()
 
 if __name__ == '__main__':
     unittest.main()

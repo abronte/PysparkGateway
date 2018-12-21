@@ -1,5 +1,4 @@
 import os
-import sys
 from multiprocessing import Process
 import time
 import threading
@@ -85,8 +84,6 @@ class TunnelProcess(object):
             t.start()
 
     def wait_and_kill(self, proc, timeout):
-        print('waiting to kill proc')
         time.sleep(timeout)
-        print('killing proc')
         proc.terminate()
         proc.join(1)
