@@ -36,6 +36,7 @@ def temp_tunnel():
     if TMP_PROC != None:
         TMP_PROC.proc.terminate()
         TMP_PROC.proc.join(1)
+        time.sleep(1)
 
     req = request.json
 
