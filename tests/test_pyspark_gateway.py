@@ -43,14 +43,14 @@ class PysparkGatewayTestCase(unittest.TestCase):
 
         self.assertEqual(type(sc), SparkContext)
 
-        df = sqlContext.createDataFrame([(1,2,'value 1')], ['id1', 'id2', 'val'])
-        self.assertEqual(df.count(), 1)
-
-        rows = df.collect()
-        self.assertEqual(rows[0].id1, 1)
-
-        pd = df.toPandas()
-        self.assertEqual(type(pd), pandas.core.frame.DataFrame)
+        # df = sqlContext.createDataFrame([(1,2,'value 1')], ['id1', 'id2', 'val'])
+        # self.assertEqual(df.count(), 1)
+        #
+        # rows = df.collect()
+        # self.assertEqual(rows[0].id1, 1)
+        #
+        # pd = df.toPandas()
+        # self.assertEqual(type(pd), pandas.core.frame.DataFrame)
 
         sc.stop()
         pg.gateway.shutdown()
