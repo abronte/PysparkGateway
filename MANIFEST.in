@@ -1,0 +1,4 @@
+include LICENSE README.rst
+
+global-exclude *.py[co]
+recursive-include tests *.py
