@@ -5,7 +5,7 @@ import pkgutil
 import requests
 from py4j.java_gateway import JavaGateway, GatewayParameters
 
-from pyspark_gateway.server import HTTP_PORT, GATEWAY_PORT, TEMP_PORT
+from pyspark_gateway.server import HTTP_PORT, GATEWAY_PORT
 
 class PysparkGateway(object):
     http_url = 'http://localhost:%d' % HTTP_PORT
@@ -17,7 +17,8 @@ class PysparkGateway(object):
 
     @classmethod
     def open_tmp_tunnel(cls, port):
-        requests.post(cls.http_url+'/tmp_tunnel', json={'port': port})
+        r = requests.post(cls.http_url+'/tmp_tunnel', json={'port': port})
+        return r.json()['port']
 
     def patch(self):
         path = os.path.dirname(os.path.realpath(__file__))+'/patch_files/java_gateway_patch.py'

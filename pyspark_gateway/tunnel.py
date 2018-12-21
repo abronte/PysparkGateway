@@ -20,6 +20,8 @@ class Tunnel(object):
         self.server()
 
     def signal_handler(self, signum, frame):
+        print('Terminating tunnel from %d to %d' % (self.src_port, self.dst_port))
+
         if self.remote_socket:
             self.remote_socket.close()
 
@@ -58,10 +60,7 @@ class Tunnel(object):
 
                 dst.send(buffer)
         except:
-            src.shutdown(socket.SHUT_RDWR)
-            src.close()
-            dst.shutdown(socket.SHUT_RDWR)
-            dst.close()
+            pass
 
         try:
             src.shutdown(socket.SHUT_RDWR)

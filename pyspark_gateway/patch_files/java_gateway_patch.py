@@ -37,7 +37,6 @@ from pyspark.serializers import read_int, write_with_length, UTF8Deserializer
 from pyspark.util import _exception_message
 
 from pyspark_gateway import PysparkGateway
-from pyspark_gateway.server import TEMP_PORT
 
 def launch_gateway(conf=None):
     """
@@ -151,7 +150,7 @@ def _do_server_auth(conn, auth_secret):
 
 
 def local_connect_and_auth(port, auth_secret):
-    PysparkGateway.open_tmp_tunnel(port)
+    tmp_port = PysparkGateway.open_tmp_tunnel(port)
 
     """
     Connect to local host, authenticate with it, and return a (sockfile,sock) for that connection.
@@ -164,7 +163,7 @@ def local_connect_and_auth(port, auth_secret):
     errors = []
     # Support for both IPv4 and IPv6.
     # On most of IPv6-ready systems, IPv6 will take precedence.
-    for res in socket.getaddrinfo("127.0.0.1", TEMP_PORT, socket.AF_UNSPEC, socket.SOCK_STREAM):
+    for res in socket.getaddrinfo("127.0.0.1", tmp_port, socket.AF_UNSPEC, socket.SOCK_STREAM):
         af, socktype, proto, _, sa = res
         try:
             sock = socket.socket(af, socktype, proto)

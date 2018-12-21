@@ -31,20 +31,20 @@ def gateway():
 
 @app.route('/tmp_tunnel', methods=['POST'])
 def temp_tunnel():
-    global TMP_PROC
+    global TMP_PROC, TEMP_PORT
 
     if TMP_PROC != None:
         TMP_PROC.proc.terminate()
         TMP_PROC.proc.join(1)
-        time.sleep(1)
 
     req = request.json
 
-    print('Opening temporary tunnel from port %d' % req['port'])
+    print('Opening temporary tunnel from port %d to %d' % (req['port'], TEMP_PORT))
 
     TMP_PROC = TunnelProcess(TEMP_PORT, req['port'], timeout=5)
+    TMP_PROC.proc.join(1)
 
-    return jsonify({'success': True})
+    return jsonify({'port': TEMP_PORT})
 
 def run(*args, **kwargs):
     global GATEWAY

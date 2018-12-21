@@ -36,6 +36,7 @@ class PysparkGatewayTestCase(unittest.TestCase):
         import pyspark
         from pyspark import SparkContext, SparkConf
         from pyspark.sql.context import SQLContext
+        from pyspark.sql.functions import udf
 
         conf = SparkConf().set('spark.io.encryption.enabled', 'true')
         sc = SparkContext(gateway=pg.gateway, conf=conf)
@@ -43,14 +44,28 @@ class PysparkGatewayTestCase(unittest.TestCase):
 
         self.assertEqual(type(sc), SparkContext)
 
-        # df = sqlContext.createDataFrame([(1,2,'value 1')], ['id1', 'id2', 'val'])
-        # self.assertEqual(df.count(), 1)
-        #
-        # rows = df.collect()
-        # self.assertEqual(rows[0].id1, 1)
-        #
-        # pd = df.toPandas()
-        # self.assertEqual(type(pd), pandas.core.frame.DataFrame)
+        df = sqlContext.createDataFrame([(1,2,'value 1')], ['id1', 'id2', 'val'])
+        self.assertEqual(df.count(), 1)
+
+        rows = df.collect()
+        self.assertEqual(rows[0].id1, 1)
+
+        pd = df.toPandas()
+        self.assertEqual(type(pd), pandas.core.frame.DataFrame)
+
+        data = [(1,2,'a'),(3,4,'b'),(5,6,'c')]
+        df = sqlContext.createDataFrame(data, ['foo', 'bar', 'baz'])
+        df.createOrReplaceTempView('foo_table')
+
+        def squared(v):
+            return v * v
+
+        sqlContext.udf.register('squared', squared)
+
+        squared_df = sqlContext.sql('select squared(foo) AS val from foo_table')
+        rows = squared_df.collect()
+
+        self.assertEqual(rows[2].val, '25')
 
         sc.stop()
         pg.gateway.shutdown()
