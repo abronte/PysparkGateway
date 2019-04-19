@@ -3,11 +3,9 @@ import time
 import atexit
 import signal
 import os
-
 import logging
 
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
 
 from flask import Flask, request, jsonify
 from flask.logging import default_handler
@@ -59,7 +57,7 @@ def run(*args, **kwargs):
         app.logger.removeHandler(default_handler)
         app.logger = logger
 
-        logger.info('Starting pyspark gateway web server')
+        logger.info('Starting pyspark gateway server')
 
     if 'port' not in kwargs:
         kwargs['port'] = HTTP_PORT

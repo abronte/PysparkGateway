@@ -1,0 +1,96 @@
+#!/usr/bin/env python
+import sys
+import os
+import time
+import argparse
+
+from pyspark_gateway.logger import configure_logging
+
+PID_PATH = '/var/run/pyspark_gateway.pid'
+
+def start(args):
+    if status(False):
+        print('Pyspark gateway already running.')
+    else:
+        configure_logging(args.foreground, args.log_level)
+
+        if args.foreground:
+            start_server(args)
+        else:
+            start_background(args)
+
+def start_background(args):
+    try:
+        pid = os.fork()
+
+        if pid != 0:
+            pid_file = open(PID_PATH, 'w')
+            pid_file.write(str(pid))
+            pid_file.close()
+    except OSError, e:
+        ## some debug output
+        sys.exit(1)
+    if pid == 0:
+        start_server(args)
+
+def start_server(args):
+    import findspark
+    findspark.init()
+
+    from pyspark_gateway import server
+    server.run()
+
+def load_pid():
+    try:
+        return int(open(PID_PATH).read())
+    except IOError:
+        return False
+
+def status(print_status=True):
+    pid = load_pid()
+
+    if pid == False:
+        if print_status:
+            print('Pyspark gateway server is not running.')
+
+        return False
+    else:
+        try:
+            os.kill(pid, 0)
+        except OSError:
+            if print_status:
+                print('Pyspark gateway server is not running.')
+
+            return False
+        else:
+            if print_status:
+                print('Pyspark gateway server is running. Pid: %d' % pid)
+
+            return True
+
+def stop():
+    if status(False):
+        pid = load_pid()
+        os.kill(pid, 15)
+
+        print('Pyspark gateway server stopped.')
+    else:
+        print('Pyspark gateway server is not running.')
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Pyspark Gateway Server')
+
+    required = parser.add_argument_group('required arguments')
+    required.add_argument('action',help='start|stop|status', choices=['start', 'stop', 'status'])
+
+    parser.add_argument('--foreground', help='Starts server in the foreground', action='store_true')
+    parser.add_argument('--log-level', help='Sets logging level. Default: INFO', type=str, default='INFO')
+
+    args = parser.parse_args()
+
+    if args.action == 'start':
+        start(args)
+    elif args.action == 'stop':
+        stop()
+    elif args.action == 'status':
+        status()
