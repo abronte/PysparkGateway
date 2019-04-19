@@ -10,7 +10,7 @@ with open('requirements.txt') as fp:
 
 setup(
     name='PysparkGateway',
-    version='0.0.3',
+    version='0.0.5',
     packages=[
         'pyspark_gateway',
         'pyspark_gateway.patch_files'],
@@ -25,6 +25,7 @@ setup(
         ]
     },
     python_requires='>=2.7',
+    scripts=['bin/pyspark-gateway'],
     url='https://github.com/abronte/PysparkGateway',
     author='Adam Bronte',
     author_email='adam@bronte.me',
