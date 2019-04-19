@@ -47,14 +47,11 @@ def temp_tunnel():
 def run(*args, **kwargs):
     global GATEWAY
 
-    from pyspark.java_gateway import launch_gateway
+    if GATEWAY == None:
+        from pyspark.java_gateway import launch_gateway
 
-    if GATEWAY != None:
-        GATEWAY.shutdown()
-
-    GATEWAY = launch_gateway()
-
-    p = TunnelProcess(GATEWAY_PORT, GATEWAY.gateway_parameters.port)
+        GATEWAY = launch_gateway()
+        TunnelProcess(GATEWAY_PORT, GATEWAY.gateway_parameters.port)
 
     if 'debug' not in kwargs or ('debug' in kwargs and kwargs['debug'] == False):
         app.logger.removeHandler(default_handler)
