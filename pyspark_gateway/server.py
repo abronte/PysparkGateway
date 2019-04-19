@@ -49,6 +49,9 @@ def run(*args, **kwargs):
 
     from pyspark.java_gateway import launch_gateway
 
+    if GATEWAY != None:
+        GATEWAY.shutdown()
+
     GATEWAY = launch_gateway()
 
     p = TunnelProcess(GATEWAY_PORT, GATEWAY.gateway_parameters.port)
