@@ -37,7 +37,7 @@ def temp_tunnel():
 
     req = request.json
 
-    print('Opening temporary tunnel from port %d to %d' % (req['port'], TEMP_PORT))
+    logger.info('Opening temporary tunnel from port %d to %d' % (req['port'], TEMP_PORT))
 
     TMP_PROC = TunnelProcess(TEMP_PORT, req['port'], timeout=5)
     TMP_PROC.proc.join(1)

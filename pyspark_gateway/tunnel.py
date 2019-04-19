@@ -4,6 +4,9 @@ import time
 import threading
 import socket
 import signal
+import logging
+
+logger = logging.getLogger()
 
 class Tunnel(object):
     bind_address = '127.0.0.1'
@@ -20,7 +23,7 @@ class Tunnel(object):
         self.server()
 
     def signal_handler(self, signum, frame):
-        print('Terminating tunnel from %d to %d' % (self.src_port, self.dst_port))
+        logger.info('Terminating tunnel from %d to %d' % (self.src_port, self.dst_port))
 
         if self.remote_socket:
             self.remote_socket.close()
