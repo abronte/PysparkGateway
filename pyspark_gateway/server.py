@@ -44,6 +44,20 @@ def temp_tunnel():
 
     return jsonify({'port': TEMP_PORT})
 
+@app.route('/spark_version', methods=['GET'])
+def spark_version():
+    from pyspark_gateway.spark_version import spark_version
+
+    major, minor, patch = spark_version()
+
+    resp = {
+        'spark_major_version': major,
+        'spark_minor_version': minor,
+        'spark_patch_version': patch
+        }
+
+    return jsonify(resp)
+
 def run(*args, **kwargs):
     global GATEWAY
 
