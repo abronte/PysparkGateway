@@ -7,7 +7,7 @@ with open('README.rst') as fp:
 
 setup(
     name='PysparkGateway',
-    version='0.0.6',
+    version='0.0.7',
     packages=[
         'pyspark_gateway',
         'pyspark_gateway.patch_files'],
