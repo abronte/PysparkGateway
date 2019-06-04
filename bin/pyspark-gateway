@@ -5,6 +5,7 @@ import time
 import argparse
 
 from pyspark_gateway.logger import configure_logging
+from pyspark_gateway.spark_version import valid_spark_version
 
 PID_PATH = '/var/run/pyspark_gateway.pid'
 
@@ -78,6 +79,12 @@ def stop():
         print('Pyspark gateway server is not running.')
 
 if __name__ == '__main__':
+    if not valid_spark_version():
+        print('\n************************ WARNING ***********************')
+        print('* Pyspark gateway requires spark version 2.4 or later! *')
+        print('* This may not work!                                   *')
+        print('********************************************************\n')
+
     parser = argparse.ArgumentParser(description='Pyspark Gateway Server')
 
     required = parser.add_argument_group('required arguments')
