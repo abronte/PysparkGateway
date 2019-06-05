@@ -9,11 +9,6 @@ before_install:
   - docker build -t pyspark_gateway_2_7 -f docker/2_7_Dockerfile .
   - docker build -t pyspark_gateway_3_6 -f docker/3_6_Dockerfile .
 
-maxtrix:
-  include:
-  - name: "Python 2.7"
-    env: TEST_SUITE=pyspark_gateway_2_7
-  - name: "Python 3.6"
-    env: TEST_SUITE=pyspark_gateway_3_6
-
-script: docker run -it -e CI=true $TEST_SUITE python tests/test_pyspark_gateway.py
+script:
+  - docker run -it -e CI=true pyspark_gateway_2_7 python tests/test_pyspark_gateway.py
+  - docker run -it -e CI=true pyspark_gateway_3_6 python tests/test_pyspark_gateway.py
