@@ -9,10 +9,13 @@ from py4j.java_gateway import JavaGateway, GatewayParameters
 from pyspark_gateway.server import HTTP_PORT, GATEWAY_PORT
 
 class PysparkGateway(object):
-    http_url = 'http://localhost:%d' % HTTP_PORT
+    http_url = None
     gateway = None
 
-    def __init__(self):
+    def __init__(self, host=os.environ.get('PYSPARK_GATEWAY_HOST', 'localhost')):
+        self.http_url = 'http://%s:%d' % (host, HTTP_PORT)
+        PysparkGateway.http_url = self.http_url
+
         self.patch()
         self.check_version()
         self.start_gateway()
