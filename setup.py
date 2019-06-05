@@ -23,7 +23,8 @@ setup(
     extras_require={
         'dev': [
             'pandas',
-            'psutil'
+            'psutil',
+            'pyspark==2.4.0'
         ]
     },
     python_requires='>=2.7',
