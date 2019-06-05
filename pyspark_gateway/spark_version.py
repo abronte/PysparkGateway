@@ -1,3 +1,6 @@
+import findspark
+findspark.init()
+
 from pyspark.version import __version__
 
 def spark_version():
