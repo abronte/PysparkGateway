@@ -28,7 +28,7 @@ class PysparkGateway(object):
 
         pkg = pkgutil.get_loader('pyspark')
 
-        path = pkg.filename.split('/')
+        path = pkg.get_filename().split('/')[:-1]
         path.append('java_gateway.py')
         path = '/'.join(path)
 
