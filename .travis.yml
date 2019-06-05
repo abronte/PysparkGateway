@@ -1,18 +1,14 @@
-dist: xenial
-language: python
+language: generic
 
-python:
-  - '2.7'
-  - '3.6'
+sudo: required
+
+services:
+  - docker
 
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y wget openjdk-8-jdk-headless
-  - wget -q -O scala.deb https://downloads.lightbend.com/scala/2.12.6/scala-2.12.6.deb
-  - sudo dpkg -i scala.deb
-
-install:
-  - pip install -e .[dev]
+  - docker build -t pyspark_gateway_2_7 -f docker/2_7_Dockerfile .
+  - docker build -t pyspark_gateway_3_6 -f docker/3_6_Dockerfile .
 
 script:
-  python tests/test_pyspark_gateway.py
+  - docker run -it -e CI=true pyspark_gateway_2_7 python tests/test_pyspark_gateway.py
+  - docker run -it -e CI=true pyspark_gateway_3_6 python tests/test_pyspark_gateway.py
