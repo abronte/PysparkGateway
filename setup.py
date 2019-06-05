@@ -5,13 +5,9 @@ from distutils.core import setup
 with open('README.rst') as fp:
     readme = fp.read()
 
-version = {}
-with open('pyspark_gateway/version.py', 'r') as f:
-    exec(f.read(), version)
-
 setup(
     name='PysparkGateway',
-    version=version['__version__'],
+    version='0.0.8',
     packages=[
         'pyspark_gateway',
         'pyspark_gateway.patch_files'],
