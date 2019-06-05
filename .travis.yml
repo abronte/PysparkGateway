@@ -12,9 +12,8 @@ before_install:
 maxtrix:
   include:
   - name: "Python 2.7"
-    env: CONTAINER=pyspark_gateway_2_7
+    env: TEST_SUITE=pyspark_gateway_2_7
   - name: "Python 3.6"
-    env: CONTAINER=pyspark_gateway_3_6
+    env: TEST_SUITE=pyspark_gateway_3_6
 
-script:
-  - docker run -i -e CI=true -t $CONTAINER python tests/test_pyspark_gateway.py
+script: docker run -it -e CI=true $TEST_SUITE python tests/test_pyspark_gateway.py
