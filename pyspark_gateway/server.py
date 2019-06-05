@@ -47,13 +47,15 @@ def temp_tunnel():
 @app.route('/spark_version', methods=['GET'])
 def spark_version():
     from pyspark_gateway.spark_version import spark_version
+    from pyspark_gateway.version import __version__
 
     major, minor, patch = spark_version()
 
     resp = {
         'spark_major_version': major,
         'spark_minor_version': minor,
-        'spark_patch_version': patch
+        'spark_patch_version': patch,
+        'pyspark_gateway_version': __version__
         }
 
     return jsonify(resp)

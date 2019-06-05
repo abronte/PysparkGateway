@@ -48,6 +48,7 @@ class PysparkGateway(object):
 
     def check_version(self):
         from pyspark_gateway.spark_version import spark_version, valid_spark_version
+        from pyspark_gateway.version import __version__
 
         r = requests.get(self.http_url+'/spark_version')
         resp = r.json()
@@ -60,7 +61,20 @@ class PysparkGateway(object):
 
         if not valid_spark_version():
             print('Pyspark Gateway requires Spark version >= 2.4')
+
             sys.exit(-1)
+        elif 'pyspark_gateway_version' not in resp:
+            print('Pyspark Gateway client version doesn\'t match server')
+            print('No server version found.')
+
+            sys.exit(-1)
+        elif 'pyspark_gateway_version' in resp:
+            if __version__ != resp['pyspark_gateway_version']:
+                print('Pyspark Gateway client version doesn\'t match server')
+                print('Server version: %s' % (resp['pyspark_gateway_version']))
+                print('Client version: %s' % (__version__))
+
+                sys.exit(-1)
         elif server_major != client_major or server_minor != client_minor:
             print('Spark server version: %s' % (resp['spark_version']))
             print('Spark client version: %s' % (spark_version))
