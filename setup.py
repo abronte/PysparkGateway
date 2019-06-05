@@ -2,14 +2,16 @@
 import os
 from distutils.core import setup
 
-from pyspark_gateway.version import __version__
-
 with open('README.rst') as fp:
     readme = fp.read()
 
+version = {}
+with open('pyspark_gateway/version.py', 'r') as f:
+    exec(f.read(), version)
+
 setup(
     name='PysparkGateway',
-    version=__version__,
+    version=version['__version__'],
     packages=[
         'pyspark_gateway',
         'pyspark_gateway.patch_files'],
