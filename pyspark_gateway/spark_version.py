@@ -1,7 +1,12 @@
-import findspark
-findspark.init()
+import sys
 
-from pyspark.version import __version__
+try:
+    from pyspark.version import __version__
+except:
+    import findspark
+    findspark.init()
+
+    from pyspark.version import __version__
 
 def spark_version():
     major, minor, patch = __version__.split('.')
