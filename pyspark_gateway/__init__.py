@@ -16,6 +16,7 @@ class PysparkGateway(object):
             host=os.environ.get('PYSPARK_GATEWAY_HOST', 'localhost'),
             http_port=os.environ.get('PYSPARK_GATEWAY_HTTP_PORT', HTTP_PORT)):
 
+        self.host = host
         self.http_url = 'http://%s:%d' % (host, int(http_port))
         PysparkGateway.http_url = self.http_url
 
@@ -94,6 +95,7 @@ class PysparkGateway(object):
         resp = r.json()
 
         params = GatewayParameters(
+                address=self.host,
                 port=GATEWAY_PORT,
                 auth_token=resp['auth_token'],
                 auto_convert=True)
