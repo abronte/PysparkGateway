@@ -12,8 +12,11 @@ class PysparkGateway(object):
     http_url = None
     gateway = None
 
-    def __init__(self, host=os.environ.get('PYSPARK_GATEWAY_HOST', 'localhost')):
-        self.http_url = 'http://%s:%d' % (host, HTTP_PORT)
+    def __init__(self,
+            host=os.environ.get('PYSPARK_GATEWAY_HOST', 'localhost'),
+            http_port=os.environ.get('PYSPARK_GATEWAY_HTTP_PORT', HTTP_PORT)):
+
+        self.http_url = 'http://%s:%d' % (host, http_port)
         PysparkGateway.http_url = self.http_url
 
         self.patch()
