@@ -72,7 +72,7 @@ def status(print_status=True):
 def stop():
     if status(False):
         pid = load_pid()
-        os.kill(pid, 15)
+        os.killpg(os.getpgid(pid), 15)
 
         print('Pyspark gateway server stopped.')
     else:
