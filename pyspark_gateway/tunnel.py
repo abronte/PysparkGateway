@@ -70,6 +70,8 @@ class Tunnel(object):
             src.close()
             dst.shutdown(socket.SHUT_RDWR)
             dst.close()
+
+            self.signal_handler(None, None)
         except:
             pass
 

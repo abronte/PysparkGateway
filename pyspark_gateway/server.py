@@ -39,7 +39,7 @@ def temp_tunnel():
 
     logger.info('Opening temporary tunnel from port %d to %d' % (req['port'], TEMP_PORT))
 
-    TMP_PROC = TunnelProcess(TEMP_PORT, req['port'], timeout=60)
+    TMP_PROC = TunnelProcess(TEMP_PORT, req['port'])
     TMP_PROC.proc.join(1)
 
     return jsonify({'port': TEMP_PORT})
