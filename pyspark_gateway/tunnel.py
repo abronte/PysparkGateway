@@ -14,9 +14,10 @@ class Tunnel(object):
     local_socket = None
     server_socket = None
 
-    def __init__(self, src_port, dst_port):
+    def __init__(self, src_port, dst_port, keep_alive=False):
         self.src_port = src_port
         self.dst_port = dst_port
+        self.keep_alive = keep_alive
 
         signal.signal(signal.SIGTERM, self.signal_handler)
 
@@ -71,15 +72,16 @@ class Tunnel(object):
             dst.shutdown(socket.SHUT_RDWR)
             dst.close()
 
-            self.signal_handler(None, None)
+            if self.keep_alive == False:
+                self.signal_handler(None, None)
         except:
             pass
 
 class TunnelProcess(object):
     proc = None
 
-    def __init__(self, src_port, dst_port, timeout=None):
-        self.proc = Process(target=Tunnel, args=(src_port, dst_port))
+    def __init__(self, src_port, dst_port, timeout=None, keep_alive=False):
+        self.proc = Process(target=Tunnel, args=(src_port, dst_port, keep_alive))
         self.proc.daemon = True
         self.proc.start()
 

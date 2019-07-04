@@ -67,7 +67,7 @@ def run(*args, **kwargs):
         from pyspark.java_gateway import launch_gateway
 
         GATEWAY = launch_gateway()
-        TunnelProcess(GATEWAY_PORT, GATEWAY.gateway_parameters.port)
+        TunnelProcess(GATEWAY_PORT, GATEWAY.gateway_parameters.port, keep_alive=True)
 
     if 'debug' not in kwargs or ('debug' in kwargs and kwargs['debug'] == False):
         app.logger.removeHandler(default_handler)
