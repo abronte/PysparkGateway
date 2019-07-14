@@ -8,9 +8,7 @@ with open('README.rst') as fp:
 setup(
     name='PysparkGateway',
     version='0.0.18',
-    packages=[
-        'pyspark_gateway',
-        'pyspark_gateway.patch_files'],
+    packages=['pyspark_gateway'],
     license='Apache 2.0',
     description='Connect Pyspark to remote clusters',
     long_description=readme,
