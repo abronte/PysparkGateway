@@ -28,6 +28,8 @@ from pyspark_gateway.server import HTTP_PORT, GATEWAY_PORT
 # limitations under the License.
 #
 def local_connect_and_auth(port, auth_secret):
+    from pyspark_gateway import PysparkGateway
+
     tmp_port = PysparkGateway.open_tmp_tunnel(port)
 
     """
@@ -57,9 +59,14 @@ def local_connect_and_auth(port, auth_secret):
             sock = None
     else:
         raise Exception("could not open socket: %s" % errors)
+try:
+    from pyspark import java_gateway
+except:
+    import findspark
+    findspark.init()
 
+    from pyspark import java_gateway
 
-from pyspark import java_gateway
 java_gateway.local_connect_and_auth = local_connect_and_auth
 
 class PysparkGateway(object):
