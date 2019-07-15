@@ -7,7 +7,7 @@ with open('README.rst') as fp:
 
 setup(
     name='PysparkGateway',
-    version='0.0.18',
+    version='0.0.19',
     packages=['pyspark_gateway'],
     license='Apache 2.0',
     description='Connect Pyspark to remote clusters',
