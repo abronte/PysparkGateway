@@ -83,7 +83,6 @@ class PysparkGateway(object):
         PysparkGateway.http_url = self.http_url
         PysparkGateway.host = self.host
 
-        # self.patch()
         self.check_version()
         self.start_gateway()
 
@@ -91,30 +90,6 @@ class PysparkGateway(object):
     def open_tmp_tunnel(cls, port):
         r = requests.post(cls.http_url+'/tmp_tunnel', json={'port': port})
         return r.json()['port']
-
-    def patch(self):
-        path = os.path.dirname(os.path.realpath(__file__))+'/patch_files/java_gateway_patch.py'
-        patch_file = open(path, 'r').read()
-
-        pkg = pkgutil.get_loader('pyspark')
-
-        path = pkg.get_filename().split('/')[:-1]
-        path.append('java_gateway.py')
-        path = '/'.join(path)
-
-        if os.path.exists(path+'c'):
-            os.remove(path+'c')
-
-        original_file = open(path, 'r').read()
-
-        with open(path, 'w') as f:
-            f.write(patch_file)
-
-        def put_back(data, path):
-            with open(path, 'w') as f:
-                f.write(data)
-
-        atexit.register(put_back, original_file, path)
 
     def check_version(self):
         from pyspark_gateway.spark_version import spark_version, valid_spark_version
