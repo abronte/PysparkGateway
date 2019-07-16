@@ -7,8 +7,6 @@ import psutil
 import requests
 import pandas
 
-import pyspark
-
 from pyspark_gateway import server
 from pyspark_gateway import PysparkGateway
 
