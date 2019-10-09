@@ -28,7 +28,7 @@ def start_background(args):
             pid_file = open(PID_PATH, 'w')
             pid_file.write(str(pid))
             pid_file.close()
-    except OSError, e:
+    except OSError:
         ## some debug output
         sys.exit(1)
     if pid == 0:
