@@ -15,10 +15,10 @@ setup(
     description='Connect Pyspark to remote clusters',
     long_description=readme,
     install_requires=[
-        'requests>=2.20.0',
-        'Flask~=1.0.2',
-        'py4j~=0.10.7',
-        'findspark~=1.3.0'
+        'requests>=2.25.1',
+        'Flask~=1.1.2',
+        'py4j~=0.10.9.2',
+        'findspark~=1.4.2'
         ],
     extras_require={
         'dev': [
@@ -26,7 +26,7 @@ setup(
             'psutil'
         ]
     },
-    python_requires='>=2.7',
+    python_requires='>=3.6',
     scripts=['bin/pyspark-gateway'],
     url='https://github.com/abronte/PysparkGateway',
     author='Adam Bronte',

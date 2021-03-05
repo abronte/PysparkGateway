@@ -6,9 +6,9 @@ services:
   - docker
 
 before_install:
-  - docker build -t pyspark_gateway_2_7 -f docker/2_7_Dockerfile .
   - docker build -t pyspark_gateway_3_6 -f docker/3_6_Dockerfile .
+  - docker build -t pyspark_gateway_3_7 -f docker/3_7_Dockerfile .
 
 script:
-  - docker run -it -e CI=true pyspark_gateway_2_7 python tests/test_pyspark_gateway.py
   - docker run -it -e CI=true pyspark_gateway_3_6 python tests/test_pyspark_gateway.py
+  - docker run -it -e CI=true pyspark_gateway_3_7 python tests/test_pyspark_gateway.py

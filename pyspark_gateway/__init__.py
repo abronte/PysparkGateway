@@ -64,9 +64,8 @@ class PysparkGateway(object):
 
         server_major = resp['spark_major_version']
         server_minor = resp['spark_minor_version']
-        server_patch = resp['spark_patch_version']
 
-        client_major, client_minor, client_patch = spark_version()
+        client_major, client_minor = spark_version()
 
         if not valid_spark_version():
             print('Pyspark Gateway requires Spark version >= 2.4')

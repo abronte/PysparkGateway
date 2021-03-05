@@ -9,15 +9,17 @@ except:
     from pyspark.version import __version__
 
 def spark_version():
-    major, minor, patch = __version__.split('.')
+    v = __version__.split('.')
+    major = v[0]
+    minor = v[1]
 
-    return int(major), int(minor), int(patch)
+    return int(major), int(minor)
 
 def valid_spark_version():
-    major, minor, patch = spark_version()
+    major, minor = spark_version()
 
     # requires spark >= 2.4
-    if major >= 2 and minor >= 4:
+    if (major >= 2 and minor >= 4) or major >= 3:
         return True
     else:
         return False
