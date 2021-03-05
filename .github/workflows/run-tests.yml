@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Tests
 
 on:
   push:
@@ -28,4 +28,4 @@ jobs:
     - name: Build the Docker image
       run: docker build -t pyspark_gateway_3_7 -f docker/3_7_Dockerfile .
     - name: Run Tests
-      run: docker run -t e CI=true pyspark_gateway_3_7 python tests/test_pyspark_gateway.py
+      run: docker run -t -e CI=true pyspark_gateway_3_7 python tests/test_pyspark_gateway.py
