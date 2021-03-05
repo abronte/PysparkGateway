@@ -44,8 +44,27 @@ Also to enable all pyspark functions to work, ``spark.io.encryption.enabled`` ne
 
 Now you have a working spark context connected to a remote cluster.
 
+
+Running Tests
+-------------
+
+Build the docker image
+
+::
+
+    docker build -t pyspark_gateway_3_7 -f docker/3_7_Dockerfile .
+    
+Run tests
+
+::
+
+    docker run -it e CI=true pyspark_gateway_3_7 python tests/test_pyspark_gateway.py
+
 .. |Build Status| image:: https://travis-ci.org/abronte/PysparkGateway.svg?branch=master
    :target: https://travis-ci.org/abronte/PysparkGateway
 
 .. |PyPi| image:: https://img.shields.io/pypi/v/pysparkgateway.svg
    :target: https://pypi.org/project/PysparkGateway/
+   
+   
+
