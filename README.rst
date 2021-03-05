@@ -58,7 +58,7 @@ Run tests
 
 ::
 
-    docker run -it e CI=true pyspark_gateway_3_7 python tests/test_pyspark_gateway.py
+    docker run -it -e CI=true pyspark_gateway_3_7 python tests/test_pyspark_gateway.py
 
 .. |Build Status| image:: https://travis-ci.org/abronte/PysparkGateway.svg?branch=master
    :target: https://travis-ci.org/abronte/PysparkGateway
