@@ -7,7 +7,7 @@ with open('README.rst') as fp:
 
 setup(
     name='PysparkGateway',
-    version='0.0.22',
+    version='0.0.23',
     packages=[
         'pyspark_gateway',
         'pyspark_gateway.patch_files'],
@@ -17,7 +17,8 @@ setup(
     install_requires=[
         'requests>=2.25.1',
         'Flask~=1.1.2',
-        'py4j~=0.10.9.2',
+        # pyspark 2.4.0 (earliest pyspark version supported) locks py4j==0.10.7
+        'py4j>=0.10.7.0',
         'findspark~=1.4.2'
         ],
     extras_require={
